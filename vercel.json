@@ -1,8 +1,30 @@
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
-  "framework": "vite",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
-  ]
-}
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import path from "path";
+
+export default defineConfig({
+  plugins: [react()],
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "src"),
+      "@shared": path.resolve(__dirname, "shared"),
+      "@assets": path.resolve(__dirname, "attached_assets"),
+    },
+  },
+  build: {
+    outDir: "dist",
+    emptyOutDir: true,
+    rollupOptions: {
+      // Prevent Vite from treating backend as an entry
+      input: path.resolve(__dirname, "index.html"),
+      external: ["server/**"],
+    },
+  },
+  server: {
+    port: 5173,
+    fs: {
+      strict: true,
+      deny: ["**/.*", "server/**"], // Prevent backend access during dev
+    },
+  },
+});
