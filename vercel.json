@@ -1,8 +1,8 @@
 {
-  "ignoreCommand": "echo Ignoring backend folder",
-  "builds": [
-    { "src": "package.json", "use": "@vercel/static-build" }
-  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "ignoreCommand": "if [ -d server ]; then rm -rf server; fi",
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
   ]
